@@ -1,0 +1,6 @@
+Dockerfile
+virtualenv/
+docker-compose.yml
+.github/
+.git/
+app/__pycache__/
