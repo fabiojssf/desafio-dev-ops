@@ -1,7 +1,7 @@
 name: Image push to registry docker
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: [unittest]
     types: [completed]
 
 jobs:
