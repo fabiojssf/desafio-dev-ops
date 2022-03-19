@@ -5,8 +5,10 @@ on:
     types:
       - completed
 jobs:
-  ppush_to_registry:
+  on-success:
+    name: build and send to hub docker
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/Checkout@v3
@@ -29,3 +31,16 @@ jobs:
           context: .
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  on-failure:
+    name: Open issue.
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Issue
+        if: failure() && github.event_name == 'pull_request'
+        run: |
+          curl --request POST \
+          https://api.github.com/repos/${{ github.repository }}/issues \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --data '{ "title": "Issue aberta de forma automatica para o commit: ${{ github.sha }}", "body": "Essa issue foi criada automaticamente pelo Github Action Worflow **${{ github.workflow }}**. \n\n O commit hash foi: _${{ github.sha }}_", "assignees": ["${{ github.event.pull_request.user.login }}"]}'
