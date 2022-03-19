@@ -1,8 +1,9 @@
 name: Image push to registry docker
 on:
-#  workflow_run:
-#    workflows: [CI]
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
 jobs:
   on-success:
     name: build and send to hub docker
