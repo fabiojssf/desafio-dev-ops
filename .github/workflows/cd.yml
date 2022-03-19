@@ -3,7 +3,7 @@ on:
   workflow_run:
     workflows: [unittest]
     types: [completed]
-
+    branches: [fabio]
 jobs:
   on-success:
     name: build and send to hub docker
