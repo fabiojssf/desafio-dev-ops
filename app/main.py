@@ -4,7 +4,7 @@
 from flask import Flask
 from flask import make_response
 
-import osX
+import os
 import json
 from werkzeug.exceptions import NotFound
 
